@@ -1,0 +1,3 @@
+# Project exclude paths
+/framworkapi/target/
+/web/target/
