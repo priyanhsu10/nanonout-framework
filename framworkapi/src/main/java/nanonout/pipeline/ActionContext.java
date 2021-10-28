@@ -12,6 +12,18 @@ public class ActionContext {
     private HttpServletRequest request;
     private HttpServletResponse response;
 
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
+    }
+
+    public HttpServletResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
+    }
+
     public HashMap<String, Object> getData() {
         return data;
     }
@@ -22,8 +34,8 @@ public class ActionContext {
 
 
     public ActionContext(ServletRequest servletRequest, ServletResponse servletResponse) {
-        this.request = (HttpServletRequest)request;
-        this.response =(HttpServletResponse) response;
+        this.request = (HttpServletRequest)servletRequest;
+        this.response =(HttpServletResponse) servletResponse;
         data = new HashMap<>();
     }
 

@@ -8,7 +8,7 @@ import nanonout.pipeline.AppPipeLineBuilder;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
-@WebFilter("*")
+
 public class AppFilter implements Filter {
     public  static Action action;
     @Override
@@ -33,8 +33,9 @@ public class AppFilter implements Filter {
         //trigger framework
         ActionContext actionContext= new ActionContext(servletRequest,servletResponse);
         action.next(actionContext);
-
-        System.out.println("complete request");
+        actionContext.getResponse().getWriter().println(actionContext.getData());
+        actionContext.getResponse().getWriter().println("complete request");
+        return;
     }
 
     @Override

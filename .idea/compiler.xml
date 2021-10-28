@@ -7,8 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="framworkapi" />
-        <module name="web" />
+        <module name="web-sample" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="web" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
