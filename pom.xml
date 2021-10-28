@@ -11,6 +11,7 @@
 
     <modules>
         <module>web-sample</module>
+        <module>framworkapi</module>
     </modules>
 <dependencies>
 
