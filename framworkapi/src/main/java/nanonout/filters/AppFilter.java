@@ -14,7 +14,7 @@ public class AppFilter implements Filter {
     @Override
 
     public void init(FilterConfig filterConfig) throws ServletException {
-      String startupClass=  filterConfig.getInitParameter("startup");
+      String startupClass=  filterConfig.getInitParameter("Startup");
         try {
             Class c= Class.forName(startupClass);
             if(action==null){

@@ -5,10 +5,10 @@
          version="4.0">
     <filter>
         <filter-name>AppFilter</filter-name> <!-- mandatory -->
-        <filter-class>nanonout.filters.AppFilter</filter-class> <!-- mandatory -->
+        <filter-class>app.Startup</filter-class> <!-- mandatory -->
         <init-param> <!-- optional -->
             <param-name>Startup</param-name>
-            <param-value></param-value>
+            <param-value>app.Startup</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -16,4 +16,9 @@
         <url-pattern>*</url-pattern>
 
     </filter-mapping>
+    <servlet>
+        <servlet-name>AppServlet</servlet-name>
+        <servlet-class>nanonout.app.AppServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
 </web-app>

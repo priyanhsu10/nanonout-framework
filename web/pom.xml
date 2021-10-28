@@ -8,11 +8,19 @@
     <artifactId>web</artifactId>
     <version>1.0-SNAPSHOT</version>
 <dependencies>
+
     <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
+    </dependency>
+    <dependency>
+
         <groupId>org.example</groupId>
         <artifactId>framworkapi</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <scope>compile</scope>
+        <scope>system</scope>
+        <systemPath>${basedir}/web/WEB-INF/lib/framworkapi-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
 </dependencies>
     <properties>

@@ -2,15 +2,13 @@ package app;
 
 import nanonout.ioc.IServiceCollection;
 import nanonout.pipeline.AppPipeLineBuilder;
-import nanonout.pipeline.mildlewares.IStartup;
+import nanonout.pipeline.mildlewares.AppStartup;
 
-public class Startup implements IStartup {
-    @Override
+public class Startup extends AppStartup  {
     public void configureServices(IServiceCollection iServiceCollection) {
      //   iServiceCollection.register(IServiceCollection.class,ServiceCollection.class);
     }
 
-    @Override
     public void configurePipeline(AppPipeLineBuilder builder) {
         //builder.addPipe(First.class);
         //builder.addPipe(Second.class);
