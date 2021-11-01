@@ -1,5 +1,8 @@
 package nanonout.pipeline;
 
+
+import nanonout.endpointrouting.endpointprocessing.EndPoint;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +14,24 @@ public class ActionContext {
     private final HashMap<String, Object> data;
     private HttpServletRequest request;
     private HttpServletResponse response;
+    private EndPoint endpoint;
+    private Object actionResult;
+
+    public Object getActionResult() {
+        return actionResult;
+    }
+
+    public void setActionResult(Object actionResult) {
+        this.actionResult = actionResult;
+    }
+
+    public EndPoint getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(EndPoint endpoint) {
+        this.endpoint = endpoint;
+    }
 
     public void setRequest(HttpServletRequest request) {
         this.request = request;
@@ -28,7 +49,7 @@ public class ActionContext {
         return data;
     }
 
-    public Object getRequest() {
+    public HttpServletRequest getRequest() {
         return request;
     }
 
