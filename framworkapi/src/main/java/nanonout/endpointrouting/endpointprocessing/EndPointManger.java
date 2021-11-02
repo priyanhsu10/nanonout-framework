@@ -7,19 +7,19 @@ import nanonout.ioc.container.Scope;
 import nanonout.pipeline.mildlewares.IStartup;
 import org.reflections.Reflections;
 
-import java.lang.annotation.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
- public class EndPointManger {
-    public static Map<String, List<EndPoint>> endPointMap = new HashMap<>();
+public class EndPointManger {
+    public static List<EndPoint> endPoints = new ArrayList<>();
     private final Set<Class<? extends ControllerBase>> controllerClasses;
-     private IServiceCollection serviceCollection;
+    private IServiceCollection serviceCollection;
 
-     public EndPointManger(Class<? extends IStartup> aClass,IServiceCollection serviceCollection) {
-         this.serviceCollection = serviceCollection;
-         System.out.println(aClass.getPackage().getName());
+    public EndPointManger(Class<? extends IStartup> aClass, IServiceCollection serviceCollection) {
+        this.serviceCollection = serviceCollection;
+        System.out.println(aClass.getPackage().getName());
         Reflections reflections = new Reflections(aClass.getPackage().getName());
 
         this.controllerClasses = reflections.getSubTypesOf(ControllerBase.class);
@@ -28,14 +28,14 @@ import java.util.*;
 
     }
 
-     private void registerControllers() {
-         for (Class<? extends ControllerBase> c:controllerClasses) {
-             serviceCollection.register(c, Scope.RequestScope);
-         }
+    private void registerControllers() {
+        for (Class<? extends ControllerBase> c : controllerClasses) {
+            serviceCollection.register(c, Scope.RequestScope);
+        }
 
-     }
+    }
 
-     private void process() {
+    private void process() {
         for (Class<? extends ControllerBase> controller : controllerClasses) {
 
             //get base path from route annotation
@@ -79,37 +79,82 @@ import java.util.*;
 
 
             }
+            endPoint.UrlTokens = endPoint.DisplayName.split("/");
             String key = BaseControllerPath + endPoint.DisplayName;
-            if(key==null|| key.equals("") ){
+            if (key == null || key.equals("")) {
                 continue;
             }
-            if (endPointMap.containsKey(key)) {
-                endPointMap.get(key).add(endPoint);
-            } else {
-                ArrayList<EndPoint> endPoints = new ArrayList<>();
-                endPoints.add(endPoint);
-                endPointMap.put(key, endPoints);
+            if (key.contains(":")) {
+                //contain the pattern
+                //example /account/:name/test/:id
+                endPoint.isPattern = true;
+                Arrays.stream(endPoint.UrlTokens).filter(x -> x.contains(":")).forEach(x -> {
+                    String paramName = x.substring(1);
+                    Class<?> parameterType = Arrays.stream(m.getTypeParameters()).
+                            filter(y -> y.getName().equalsIgnoreCase(paramName))
+                            .findFirst().getClass();
+                    endPoint.ParameterNameTypes.put(paramName, parameterType);
+
+                });
+
+
             }
 
+            endPoints.add(endPoint);
 
         }
     }
 
-     public EndPoint getEndPoint(String routPath, String method) {
-        if(endPointMap.containsKey(routPath)){
-            if(routPath.contains(":")){
-                //parameter present
-            }
-         return endPointMap.get(routPath).stream()
-                   .filter(x->x.HttpMethod.equals(method))
-                           .findFirst().orElseThrow(()->
-                         new RuntimeException("no action associated with route"));
-        }
-        else{
-            throw  new RuntimeException("no action associated with route");
+    public EndPoint getEndPoint(String routPath, String method) {
+//
+        String[] segments = routPath.split("/");
+        List<EndPoint> candidates = endPoints.stream().filter(x -> x.DisplayName.startsWith(segments[0])).filter(y -> y.HttpMethod.equals(method))
+                .filter(e -> e.UrlTokens.length == segments.length)
+                .collect(Collectors.toList());
+        if (candidates.isEmpty()) {
+            throw new RuntimeException("no url match");
+
         }
 
-     }
- }
+      EndPoint selected=  candidates.stream().filter(x->isEndpointMatch(x,routPath)).findFirst().orElseThrow(()->
+                new RuntimeException("No routepathMatch"));
+
+
+        return  selected;
+
+
+
+    }
+    //this logic will be  use in route data calculation
+    private boolean isEndpointMatch(EndPoint endPoint, String routPath) {
+        String[] segments = routPath.split("/");
+        String[] tokens = endPoint.DisplayName.split("/");
+        if (!endPoint.isPattern && endPoint.DisplayName.equals(routPath)) {
+            //check and match for parameters
+
+            return true;
+
+        } else {
+            List<Object> routeParameters = new ArrayList<>();
+
+            for (int i = 1; i < tokens.length; i++) {
+                if (tokens[i].startsWith(":")) {
+                    String value = segments[i];
+                    String parameterName = tokens[i].substring(1);
+                    Class<?> paramtertype = endPoint.ParameterNameTypes.get(parameterName);
+                    routeParameters.add(paramtertype.cast(value));
+                } else {
+                    if (!tokens[i].equals(segments[i])) {
+                        //not match
+                        return false;
+
+                    }
+                }
+
+            }
+            return true;
+        }
+    }
+}
 
 

@@ -67,12 +67,13 @@ public class EndPointExecuterMidleware extends Pipe {
             return new Object[]{};
         }
         Class<?>[] types = m.getParameterTypes();
+
         Parameter[] parameters = m.getParameters();
-        // if(actionContext.getEndpoint().ActionMethod.toString().equals("GET"))
-//        for(Parameter p:parameters){
-//
-//        }
-//        actionContext.getRequest().getRequest
+
+        for(Parameter p:parameters){
+
+        }
+     //   actionContext.getRequest().getRequest
         return new Object[]{};
     }
 }
