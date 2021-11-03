@@ -15,21 +15,21 @@ public class UseRouteingMiddleware extends Pipe {
     }
 
     @Override
-    public void handle(ActionContext actionContext) {
+    public void handle(ActionContext actionContext) throws Exception {
 
-        try {
 
-            PrintWriter p = actionContext.getResponse().getWriter();
-            String routPath = actionContext.getRequest().getRequestURI()
-                    .substring(actionContext.getRequest().getContextPath().length());
-            EndPoint e = ApplicationBuilder.getEndPointManger().getEndPoint(routPath, actionContext.getRequest().getMethod());
-            actionContext.setEndpoint(e);
+        setRoutingData(actionContext);
 
-            _action.next(actionContext);
+        _action.next(actionContext);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw  new RuntimeException(e);
-        }
+
+    }
+
+    private void setRoutingData(ActionContext actionContext) throws IOException {
+        PrintWriter p = actionContext.getResponse().getWriter();
+        String routPath = actionContext.getRequest().getRequestURI()
+                .substring(actionContext.getRequest().getContextPath().length()+1);
+        EndPoint e = ApplicationBuilder.getEndPointManger().getEndPoint(routPath, actionContext.getRequest().getMethod());
+        actionContext.setEndpoint(e);
     }
 }

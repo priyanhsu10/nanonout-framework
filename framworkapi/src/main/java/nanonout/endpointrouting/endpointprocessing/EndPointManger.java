@@ -79,14 +79,20 @@ public class EndPointManger {
 
 
             }
-            endPoint.UrlTokens = endPoint.DisplayName.split("/");
-            String key = BaseControllerPath + endPoint.DisplayName;
-            if (key == null || key.equals("")) {
+
+            endPoint.DisplayName = BaseControllerPath + endPoint.DisplayName;
+
+
+            if (endPoint.DisplayName == null ) {
                 continue;
             }
-            if (key.contains(":")) {
+            if(endPoint.DisplayName.startsWith("/")){
+                endPoint.DisplayName= endPoint.DisplayName.substring(1);
+            }
+            endPoint.UrlTokens = endPoint.DisplayName.split("/");
+            if (endPoint.DisplayName.contains(":")) {
                 //contain the pattern
-                //example /account/:name/test/:id
+                //example account/:name/test/:id
                 endPoint.isPattern = true;
                 Arrays.stream(endPoint.UrlTokens).filter(x -> x.contains(":")).forEach(x -> {
                     String paramName = x.substring(1);
@@ -100,13 +106,13 @@ public class EndPointManger {
 
             }
 
+
             endPoints.add(endPoint);
 
         }
     }
 
     public EndPoint getEndPoint(String routPath, String method) {
-//
         String[] segments = routPath.split("/");
         List<EndPoint> candidates = endPoints.stream().filter(x -> x.DisplayName.startsWith(segments[0])).filter(y -> y.HttpMethod.equals(method))
                 .filter(e -> e.UrlTokens.length == segments.length)

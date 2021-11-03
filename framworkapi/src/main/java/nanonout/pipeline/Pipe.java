@@ -1,5 +1,8 @@
 package nanonout.pipeline;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class Pipe {
     protected Action _action;
 
@@ -7,6 +10,6 @@ public abstract class Pipe {
         _action = action;
     }
 
-    public abstract void handle(ActionContext actionContext);
+    public abstract void handle(ActionContext actionContext) throws  Exception;
 
 }

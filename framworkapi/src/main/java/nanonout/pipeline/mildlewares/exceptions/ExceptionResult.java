@@ -3,6 +3,10 @@ package nanonout.pipeline.mildlewares.exceptions;
 public class ExceptionResult {
    private  Error error;
 
+    public ExceptionResult(Error error) {
+        this.error = error;
+    }
+
     public Error getError() {
         return error;
     }

@@ -24,7 +24,12 @@ public class AppFilter implements Filter {
 
         if (ApplicationBuilder.getAction() == null) {
 
-           ApplicationBuilder.BuildApp(startupClass);
+            try {
+                ApplicationBuilder.BuildApp(startupClass);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ServletException(e);
+            }
         }
     }
 
@@ -33,7 +38,11 @@ public class AppFilter implements Filter {
         System.out.println(servletRequest);
         //trigger framework
         ActionContext actionContext = new ActionContext(servletRequest, servletResponse);
-        ApplicationBuilder.getAction() .next(actionContext);
+        try {
+            ApplicationBuilder.getAction() .next(actionContext);
+        } catch (Exception e) {
+            throw  new RuntimeException(e);
+        }
     }
 
     @Override

@@ -25,7 +25,7 @@ public  class ApplicationBuilder {
         return serviceCollection;
     }
 
-    public static void BuildApp(String basePath) {
+    public static void BuildApp(String basePath) throws Exception {
         try {
             Class startupClass = Class.forName(basePath);
             serviceCollection=new ServiceCollection();

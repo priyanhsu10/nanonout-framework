@@ -13,21 +13,20 @@ public class ExecptionHandlerMiddleware extends Pipe {
     }
 
     @Override
-    public void handle(ActionContext actionContext) {
+    public void handle(ActionContext actionContext) throws IOException {
         try {
 
             _action.next(actionContext);
         } catch (Exception exception) {
             Error e = new Error();
 
-            e.setMessage(exception.getMessage());
+            e.setMessage(exception.getLocalizedMessage());
             e.setErrorCode(500);
-            ExceptionResult result=new ExceptionResult();
-            try {
-                actionContext.getResponse().getWriter().println(JsonHelper.serialize(result));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            ExceptionResult result = new ExceptionResult(e);
+            String data = JsonHelper.serialize(result, ExceptionResult.class);
+            actionContext.getResponse().getWriter().println(data);
+            actionContext.getResponse().setStatus(500);
+
 
         }
 

@@ -19,19 +19,11 @@ public class AppPipeLineBuilder {
         _pipeTypes = new ArrayList<>();
     }
 
-    public void useStartup(Class<? extends IStartup> startupClass, IServiceCollection iServiceCollection) {
-        try {
+    public void useStartup(Class<? extends IStartup> startupClass, IServiceCollection iServiceCollection) throws Exception {
             IStartup startup = (IStartup) startupClass.newInstance();
             startup.configureServices(iServiceCollection);
             addInitialFilters();
             startup.configurePipeline(this);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
 
     }
 

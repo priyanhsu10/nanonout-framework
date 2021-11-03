@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ModelBinding {
+public class ModelBindingResult {
     private  Map<String, Object> queryParamiters = new HashMap<>();
     private String bodyData;
    private Map<String, Object> routeData = new HashMap<>();
@@ -31,7 +31,7 @@ public class ModelBinding {
         return header;
     }
 
-    public ModelBinding(ActionContext actionContext) {
+    public ModelBindingResult(ActionContext actionContext) {
 
         proccesBinding(actionContext);
     }
@@ -43,7 +43,7 @@ public class ModelBinding {
 //        if(method.equals("GET") || method.equals("DELETE") ){
         //no need to read the body form request
         String query = actionContext.getRequest().getQueryString();
-        if (query != null && query.isEmpty()) {
+        if (query != null && !query.isEmpty()) {
 
             Arrays.stream(query.split("&")).forEach(x -> {
                 if (x.contains("=")) {

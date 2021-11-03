@@ -11,7 +11,6 @@ public class EndPoint {
     public Method ActionMethod;
     public Class<? extends ControllerBase> ControllerClass;
     public String HttpMethod;
-    public List<Object> RouteParameters;
     public String [] PatternParamters;
     public String [] UrlTokens;
     public String DisplayName;

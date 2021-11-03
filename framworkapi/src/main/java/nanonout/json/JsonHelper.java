@@ -11,8 +11,8 @@ public class JsonHelper {
         gson = new GsonBuilder().create();
 
     }
-    public  static String serialize(Object object){
-      return   gson.toJson(object);
+    public  static String serialize(Object object,Class<?> type){
+      return   gson.toJson(object,type);
     }
     public  static <T> T deserialize(String data ,Class<T> aClass){
 
