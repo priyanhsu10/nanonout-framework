@@ -55,7 +55,7 @@ public class ModelBindingResult {
         }
         if (actionContext.getEndpoint().isPattern) {
             routeData = getRouteData(actionContext.getEndpoint(),
-                    actionContext.getRequest().getRequestURI());
+                    actionContext.getRoute());
         }
         if (method.equals("PUT") || method.equals("POST")) {
             try {
@@ -82,11 +82,25 @@ public class ModelBindingResult {
                 String value = segments[i];
                 String parameterName = tokens[i].substring(1);
                 Class<?> paramtertype = endPoint.ParameterNameTypes.get(parameterName);
-                routData.put(parameterName, paramtertype.cast(value));
+                routData.put(parameterName,getObject( value,paramtertype));
             }
         }
         return routData;
 
     }
-
+    private Object getObject(String value, Class<?> paramtertype) {
+        if(paramtertype.isAssignableFrom(String.class)){
+            return value;
+        }
+        if(paramtertype.isAssignableFrom(Integer.class) || paramtertype.isAssignableFrom(int.class)){
+            return Integer.parseInt(value);
+        }
+        if(paramtertype.isAssignableFrom(Double.class)|| paramtertype.isAssignableFrom(double.class)){
+            return Double.parseDouble(value);
+        }
+        if(paramtertype.isAssignableFrom(Boolean.class)|| paramtertype.isAssignableFrom(boolean.class)){
+            return Boolean.parseBoolean(value);
+        }
+        return paramtertype.cast(value);
+    }
 }

@@ -9,6 +9,7 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -96,10 +97,16 @@ public class EndPointManger {
                 endPoint.isPattern = true;
                 Arrays.stream(endPoint.UrlTokens).filter(x -> x.contains(":")).forEach(x -> {
                     String paramName = x.substring(1);
-                    Class<?> parameterType = Arrays.stream(m.getTypeParameters()).
-                            filter(y -> y.getName().equalsIgnoreCase(paramName))
-                            .findFirst().getClass();
-                    endPoint.ParameterNameTypes.put(paramName, parameterType);
+                    Parameter[] parameters =m.getParameters();
+
+                    Class<?>[] types= m.getParameterTypes();
+                    for(int i=0;i<m.getParameterCount();i++){
+                      if(   parameters[i].getName().equalsIgnoreCase(paramName)){
+                          endPoint.ParameterNameTypes.put(paramName, types[i]);
+                          break;
+                      }
+                    }
+
 
                 });
 
@@ -148,7 +155,7 @@ public class EndPointManger {
                     String value = segments[i];
                     String parameterName = tokens[i].substring(1);
                     Class<?> paramtertype = endPoint.ParameterNameTypes.get(parameterName);
-                    routeParameters.add(paramtertype.cast(value));
+                    routeParameters.add(getObject(value, paramtertype));
                 } else {
                     if (!tokens[i].equals(segments[i])) {
                         //not match
@@ -160,6 +167,22 @@ public class EndPointManger {
             }
             return true;
         }
+    }
+
+    private Object getObject(String value, Class<?> paramtertype) {
+        if(paramtertype.isAssignableFrom(String.class)){
+            return value;
+        }
+        if(paramtertype.isAssignableFrom(Integer.class) || paramtertype.isAssignableFrom(int.class)){
+            return Integer.parseInt(value);
+        }
+        if(paramtertype.isAssignableFrom(Double.class)|| paramtertype.isAssignableFrom(double.class)){
+            return Double.parseDouble(value);
+        }
+        if(paramtertype.isAssignableFrom(Boolean.class)|| paramtertype.isAssignableFrom(boolean.class)){
+            return Boolean.parseBoolean(value);
+        }
+        return paramtertype.cast(value);
     }
 }
 

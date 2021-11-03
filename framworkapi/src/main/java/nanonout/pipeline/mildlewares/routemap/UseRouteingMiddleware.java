@@ -29,6 +29,7 @@ public class UseRouteingMiddleware extends Pipe {
         PrintWriter p = actionContext.getResponse().getWriter();
         String routPath = actionContext.getRequest().getRequestURI()
                 .substring(actionContext.getRequest().getContextPath().length()+1);
+        actionContext.setRoute(routPath);
         EndPoint e = ApplicationBuilder.getEndPointManger().getEndPoint(routPath, actionContext.getRequest().getMethod());
         actionContext.setEndpoint(e);
     }

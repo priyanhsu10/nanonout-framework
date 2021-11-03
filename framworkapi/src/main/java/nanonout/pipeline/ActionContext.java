@@ -17,6 +17,16 @@ public class ActionContext {
     private EndPoint endpoint;
     private Object actionResult;
 
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    private String  route;
+
     public Object getActionResult() {
         return actionResult;
     }
