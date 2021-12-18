@@ -1,13 +1,16 @@
 package nanonout.filters;
 
-import nanonout.app.ApplicationBuilder;
-import nanonout.pipeline.Action;
-import nanonout.pipeline.ActionContext;
-import nanonout.pipeline.AppPipeLineBuilder;
-
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+import nanonout.app.ApplicationBuilder;
+import nanonout.pipeline.ActionContext;
 
 public class AppFilter implements Filter {
 
@@ -26,6 +29,7 @@ public class AppFilter implements Filter {
 
             try {
                 ApplicationBuilder.BuildApp(startupClass);
+                
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new ServletException(e);
