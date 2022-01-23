@@ -12,7 +12,7 @@ public class MiddleWare2 extends Pipe {
     }
 
     @Override
-    public void handle(ActionContext actionContext) {
+    public void handle(ActionContext actionContext) throws Exception {
         try {
             actionContext.getResponse().getWriter().println("starting second middleware");
 

@@ -4,8 +4,6 @@ import nanonout.ioc.container.AppContainer;
 import nanonout.ioc.container.Descriptor;
 import nanonout.ioc.container.Scope;
 
-import java.util.HashMap;
-
 public class ServiceCollection implements IServiceCollection {
     private final AppContainer container;
 
@@ -25,7 +23,7 @@ public class ServiceCollection implements IServiceCollection {
 
     @Override
     public <TSource> void addSingleton(Class<TSource> source, Class<? extends TSource> target) {
-        container.addSington(source, target);
+        container.addSingleton(source, target);
     }
 
     public <T> T resolve(Class<T> source) {

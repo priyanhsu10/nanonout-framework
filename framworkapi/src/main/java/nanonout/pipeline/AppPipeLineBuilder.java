@@ -20,7 +20,7 @@ public class AppPipeLineBuilder {
     }
 
     public void useStartup(Class<? extends IStartup> startupClass, IServiceCollection iServiceCollection) throws Exception {
-            IStartup startup = (IStartup) startupClass.newInstance();
+            IStartup startup = (IStartup) startupClass.getDeclaredConstructor().newInstance();
             startup.configureServices(iServiceCollection);
             addInitialFilters();
             startup.configurePipeline(this);
@@ -29,7 +29,7 @@ public class AppPipeLineBuilder {
 
     private void addInitialFilters() {
 
-        //_pipeTypes.add(UseRouteingMiddleware.class);
+        _pipeTypes.add(UseRouteingMiddleware.class);
     }
     public void useEndPointSelector() {
 
@@ -73,6 +73,7 @@ public class AppPipeLineBuilder {
             return c::handle;
         } catch (InstantiationException | NoSuchMethodException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -80,8 +81,5 @@ public class AppPipeLineBuilder {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-
-        return null;
     }
 }

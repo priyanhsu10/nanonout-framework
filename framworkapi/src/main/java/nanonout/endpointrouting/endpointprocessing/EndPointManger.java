@@ -154,8 +154,8 @@ public class EndPointManger {
                 if (tokens[i].startsWith(":")) {
                     String value = segments[i];
                     String parameterName = tokens[i].substring(1);
-                    Class<?> paramtertype = endPoint.ParameterNameTypes.get(parameterName);
-                    routeParameters.add(getObject(value, paramtertype));
+                    Class<?> parameterType = endPoint.ParameterNameTypes.get(parameterName);
+                    routeParameters.add(getObject(value, parameterType));
                 } else {
                     if (!tokens[i].equals(segments[i])) {
                         //not match
@@ -169,20 +169,20 @@ public class EndPointManger {
         }
     }
 
-    private Object getObject(String value, Class<?> paramtertype) {
-        if(paramtertype.isAssignableFrom(String.class)){
+    private Object getObject(String value, Class<?> parameterType) {
+        if(parameterType.isAssignableFrom(String.class)){
             return value;
         }
-        if(paramtertype.isAssignableFrom(Integer.class) || paramtertype.isAssignableFrom(int.class)){
+        if(parameterType.isAssignableFrom(Integer.class) || parameterType.isAssignableFrom(int.class)){
             return Integer.parseInt(value);
         }
-        if(paramtertype.isAssignableFrom(Double.class)|| paramtertype.isAssignableFrom(double.class)){
+        if(parameterType.isAssignableFrom(Double.class)|| parameterType.isAssignableFrom(double.class)){
             return Double.parseDouble(value);
         }
-        if(paramtertype.isAssignableFrom(Boolean.class)|| paramtertype.isAssignableFrom(boolean.class)){
+        if(parameterType.isAssignableFrom(Boolean.class)|| parameterType.isAssignableFrom(boolean.class)){
             return Boolean.parseBoolean(value);
         }
-        return paramtertype.cast(value);
+        return parameterType.cast(value);
     }
 }
 

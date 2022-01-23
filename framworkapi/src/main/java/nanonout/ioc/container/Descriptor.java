@@ -2,30 +2,30 @@ package nanonout.ioc.container;
 
 public class Descriptor {
     private Class<? extends Object> source;
-    private Class<? extends Object> implemetor;
-    private Scope schope;
+    private Class<? extends Object> implementer;
+    private Scope scope;
 
     public Class<?> getSource() {
         return source;
     }
 
-    public Class<?> getImplemetor() {
-        return implemetor;
+    public Class<?> getImplementer() {
+        return implementer;
     }
 
-    public Scope getSchope() {
-        return schope;
+    public Scope getScope() {
+        return scope;
     }
 
-    public Descriptor(Class<? extends Object> source, Class<? extends Object> implemetor) {
+    public Descriptor(Class<? extends Object> source, Class<? extends Object> implementer) {
         this.source = source;
-        this.implemetor = implemetor;
-        this.schope = Scope.Singleton;
+        this.implementer = implementer;
+        this.scope = Scope.Singleton;
     }
 
-    public Descriptor(Class<? extends Object> source, Class<? extends Object> implemetor, Scope schope) {
+    public Descriptor(Class<? extends Object> source, Class<? extends Object> implementer, Scope scope) {
         this.source = source;
-        this.implemetor = implemetor;
-        this.schope = schope;
+        this.implementer = implementer;
+        this.scope = scope;
     }
 }
