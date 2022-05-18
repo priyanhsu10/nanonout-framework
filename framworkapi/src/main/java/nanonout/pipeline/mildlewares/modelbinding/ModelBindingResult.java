@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ModelBindingResult {
-    private  Map<String, Object> queryParamiters = new HashMap<>();
+    private final Map<String, Object> queryParameters = new HashMap<>();
     private String bodyData;
    private Map<String, Object> routeData = new HashMap<>();
-    private  Map<String, String> header = new HashMap<>();
+    private final   Map<String, String> header = new HashMap<>();
 
-    public Map<String, Object> getQueryParamiters() {
-        return queryParamiters;
+    public Map<String, Object> getQueryParameters() {
+        return queryParameters;
     }
 
     public String getBodyData() {
@@ -33,10 +33,10 @@ public class ModelBindingResult {
 
     public ModelBindingResult(ActionContext actionContext) {
 
-        proccesBinding(actionContext);
+        processBinding(actionContext);
     }
 
-    private void proccesBinding(ActionContext actionContext) {
+    private void processBinding(ActionContext actionContext) {
 
 
         String method = actionContext.getEndpoint().HttpMethod;
@@ -48,7 +48,7 @@ public class ModelBindingResult {
             Arrays.stream(query.split("&")).forEach(x -> {
                 if (x.contains("=")) {
                     String[] keyValue = x.split("=");
-                    queryParamiters.put(keyValue[0], keyValue[1]);
+                    queryParameters.put(keyValue[0], keyValue[1]);
                 }
 
             });
@@ -81,26 +81,26 @@ public class ModelBindingResult {
             if (tokens[i].startsWith(":")) {
                 String value = segments[i];
                 String parameterName = tokens[i].substring(1);
-                Class<?> paramtertype = endPoint.ParameterNameTypes.get(parameterName);
-                routData.put(parameterName,getObject( value,paramtertype));
+                Class<?> parameterType = endPoint.ParameterNameTypes.get(parameterName);
+                routData.put(parameterName,getObject( value,parameterType));
             }
         }
         return routData;
 
     }
-    private Object getObject(String value, Class<?> paramtertype) {
-        if(paramtertype.isAssignableFrom(String.class)){
+    private Object getObject(String value, Class<?> parameterType) {
+        if(parameterType.isAssignableFrom(String.class)){
             return value;
         }
-        if(paramtertype.isAssignableFrom(Integer.class) || paramtertype.isAssignableFrom(int.class)){
+        if(parameterType.isAssignableFrom(Integer.class) || parameterType.isAssignableFrom(int.class)){
             return Integer.parseInt(value);
         }
-        if(paramtertype.isAssignableFrom(Double.class)|| paramtertype.isAssignableFrom(double.class)){
+        if(parameterType.isAssignableFrom(Double.class)|| parameterType.isAssignableFrom(double.class)){
             return Double.parseDouble(value);
         }
-        if(paramtertype.isAssignableFrom(Boolean.class)|| paramtertype.isAssignableFrom(boolean.class)){
+        if(parameterType.isAssignableFrom(Boolean.class)|| parameterType.isAssignableFrom(boolean.class)){
             return Boolean.parseBoolean(value);
         }
-        return paramtertype.cast(value);
+        return parameterType.cast(value);
     }
 }

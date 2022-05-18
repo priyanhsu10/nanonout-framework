@@ -1,6 +1,6 @@
 package nanonout.pipeline;
 
-import nanonout.pipeline.mildlewares.endpointexecuting.EndPointExecuterMidleware;
+import nanonout.pipeline.mildlewares.endpointexecuting.EndPointExecutorMiddleware;
 import nanonout.ioc.IServiceCollection;
 import nanonout.pipeline.mildlewares.IStartup;
 import nanonout.pipeline.mildlewares.exceptions.ExecptionHandlerMiddleware;
@@ -37,7 +37,7 @@ public class AppPipeLineBuilder {
     }
     public void useExecuteEndpoint() {
 
-        _pipeTypes.add(EndPointExecuterMidleware.class);
+        _pipeTypes.add(EndPointExecutorMiddleware.class);
     }
     public void useExceptionHandler() {
 

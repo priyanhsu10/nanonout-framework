@@ -8,14 +8,13 @@ import nanonout.pipeline.Pipe;
 import nanonout.pipeline.mildlewares.modelbinding.ModelBindingResult;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EndPointExecuterMidleware extends Pipe {
-    public EndPointExecuterMidleware(Action action) {
+public class EndPointExecutorMiddleware extends Pipe {
+    public EndPointExecutorMiddleware(Action action) {
         super(action);
     }
 
@@ -28,17 +27,19 @@ public class EndPointExecuterMidleware extends Pipe {
         //2. Model Binding
         Object[] parameter = resolveParameter(actionContext);
 
-        //2. Model validation
+        //todo:2. Model validation
 
-        //basically prepare pipeline for filters same as midleware
+        //todo:basically prepare pipeline for filters same as middleware
 
-        // 4. filter execution (in next phase)
+        // todo: filter execution (in next phase)
 
         //action execution
         Object result = actionContext.getEndpoint().ActionMethod.invoke(c, parameter);
         actionContext.setActionResult(result);
+
+        //5.result processing
         if (result != null) {
-            //5.result processing
+
             Object processResult = ProcessResult(result, actionContext);
             actionContext.setActionResult(processResult);
             writeResponse(actionContext, processResult);
@@ -70,12 +71,16 @@ public class EndPointExecuterMidleware extends Pipe {
         if (contentType == null || contentType.equals("application/json")) {
             return JsonHelper.serialize(result, result.getClass());
         }
+        //todo: handle xml result
+
         if (contentType.equals("application/xml")) {
 //            JAXBContext jaxbContext = JAXBContext.newInstance(actionContext.getEndpoint().getReturnType());
 //            Unmarshaller jaxbUnmarshaller = jaxbContext.createMarshaller();
 //            Tutorials tutorials = (Tutorials) jaxbUnmarshaller.unmarshal(this.getFile());
+            //todo: for now returning json but return xml
             return JsonHelper.serialize(result, result.getClass());
         }
+        //todo: handle file result
         return "";
     }
 
@@ -96,8 +101,8 @@ public class EndPointExecuterMidleware extends Pipe {
                 params.add(bindingResult.getRouteData().get(p.getName()));
                 continue;
             }
-            if (bindingResult.getQueryParamiters().containsKey(p.getName())) {
-                params.add(bindingResult.getQueryParamiters().get(p.getName()));
+            if (bindingResult.getQueryParameters().containsKey(p.getName())) {
+                params.add(bindingResult.getQueryParameters().get(p.getName()));
                 continue;
             }
             if (actionContext.getRequest().getMethod().equals("POST") ||
