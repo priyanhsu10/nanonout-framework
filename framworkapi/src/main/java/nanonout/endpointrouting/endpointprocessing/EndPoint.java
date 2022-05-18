@@ -4,14 +4,13 @@ import nanonout.endpointrouting.ControllerBase;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EndPoint {
     public Method ActionMethod;
     public Class<? extends ControllerBase> ControllerClass;
     public String HttpMethod;
-    public String [] PatternParamters;
+    public String [] PatternParameters;
     public String [] UrlTokens;
     public String DisplayName;
     public Map<String,Class<?>> ParameterNameTypes = new HashMap<>();
